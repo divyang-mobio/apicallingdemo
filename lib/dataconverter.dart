@@ -2,25 +2,25 @@ class User {
   int userId;
   int id;
   String title;
-  String body;
+  String dis;
 
   User(
       {required this.userId,
       required this.id,
       required this.title,
-      required this.body});
+      required this.dis});
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         userId: json["userId"],
         id: json["id"],
         title: json["title"],
-        body: json["body"],
+        dis: json["body"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "userId": userId,
-        "id": id,
-        "title": title,
-        "body": body,
-      };
+  // Map<String, dynamic> toJson() => {
+  //       "userId": userId,
+  //       "id": id,
+  //       "title": title,
+  //       "body": dis,
+  //     };
 }

@@ -1,13 +1,24 @@
 part of 'apidata_bloc.dart';
 
-abstract class ApidataState {}
+abstract class ApiDataState {}
 
-class ApidataInitial extends ApidataState {}
+class ApiDataInitial extends ApiDataState {}
 
-class ApidataLoaded extends ApidataState {
+class ApiDataLoaded extends ApiDataState {
   List<User> data;
 
-  ApidataLoaded({required this.data});
+  ApiDataLoaded({required this.data});
 }
 
-class ApidataError extends ApidataState {}
+class ApiDataL extends ApiDataState {
+  int lenght;
+  List<User> data;
+
+  ApiDataL({required this.lenght, required this.data});
+}
+
+class ApiDataError extends ApiDataState {
+  String data;
+
+  ApiDataError({required this.data});
+}

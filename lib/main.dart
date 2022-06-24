@@ -12,8 +12,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ApidataBloc()..add(alldata()),
+    return BlocProvider<ApiDataBloc>(
+      create: (context) => ApiDataBloc()..add(AllData()),
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -40,55 +40,55 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.grey.shade400,
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.title),
       ),
-      body: BlocBuilder<ApidataBloc, ApidataState>(
-        // bloc: ,
+      body: BlocBuilder<ApiDataBloc, ApiDataState>(
         builder: (context, state) {
-          if (state is ApidataInitial) {
+          if (state is ApiDataInitial) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is ApidataLoaded) {
-            return ListView.builder(
-              itemCount: state.data.length,
-              padding: const EdgeInsets.all(8),
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Card(
-                      // color: Colors.greenAccent,
-                      elevation: 4,
-                      child: ListTile(
-                        title: Text(
-                          "${(state.data[index].id).toString()}. ${(state.data[index].title).toString()}",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text((state.data[index].body).toString() , maxLines: 2,overflow: TextOverflow.ellipsis,),
-                      ),
-                    ),
-                    // SizedBox(height: 10)
-                  ],
-                );
-              },
-            );
-          } else if (state is ApidataError) {
-            return const Center(child: Text("error"));
+          } else if (state is ApiDataLoaded) {
+            return _buildPosts(context, state.data, state.data.length);
+          } else if (state is ApiDataL) {
+            return _buildPosts(context, state.data, state.lenght);
+          } else if (state is ApiDataError) {
+            return Center(child: Text(state.data));
           } else {
             return const Center(child: Text("Sorry Something Went wrong :("));
           }
-          // buildBody(context);
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
+        onPressed: () {
+          BlocProvider.of<ApiDataBloc>(context).add(SomeData(lenght: 1));
+        },
         child: const Icon(Icons.add),
       ),
     );
   }
 
+  ListView _buildPosts(BuildContext context, List<User> data, int length) {
+    return ListView.builder(
+      itemCount: length,
+      padding: const EdgeInsets.all(8),
+      itemBuilder: (context, index) {
+        return Card(
+          elevation: 4,
+          child: ListTile(
+            title: Text(
+                "${(data[index].id).toString()}. ${(data[index].title).toString()}",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis),
+            subtitle: Text((data[index].dis).toString(),
+                maxLines: 2, overflow: TextOverflow.ellipsis),
+          ),
+        );
+      },
+    );
+  }
 // FutureBuilder<List<User>> buildBody(BuildContext context) {
 //   final HttpService httpService = HttpService();
 //   return FutureBuilder(

@@ -1,5 +1,11 @@
 part of 'apidata_bloc.dart';
 
-abstract class ApidataEvent {}
+abstract class ApiDataEvent {}
 
-class alldata extends ApidataEvent{}
+class AllData extends ApiDataEvent{}
+
+class SomeData extends ApiDataEvent{
+  int lenght;
+
+  SomeData({required this.lenght});
+}

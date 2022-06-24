@@ -1,25 +1,36 @@
-
 import 'package:bloc/bloc.dart';
 
 import '../datacalling.dart';
 import '../dataconverter.dart';
 
 part 'apidata_event.dart';
+
 part 'apidata_state.dart';
 
-class ApidataBloc extends Bloc<ApidataEvent, ApidataState> {
-  ApidataBloc() : super(ApidataInitial()) {
-    on<alldata>(_alldata);
+class ApiDataBloc extends Bloc<ApiDataEvent, ApiDataState> {
+  ApiDataBloc() : super(ApiDataInitial()) {
+    on<AllData>(_alldata);
+    on<SomeData>(_somedata);
   }
 
-  _alldata(alldata event , Emitter<ApidataState> emit) async {
+  _somedata(SomeData event, Emitter<ApiDataState> emit) async {
+    final HttpService httpService = HttpService();
+    try {
+      List<User> data = await httpService.getData();
+      emit(ApiDataL(lenght: event.lenght, data: data));
+    } catch (e) {
+      emit(ApiDataError(data: e.toString()));
+    }
+  }
+
+  _alldata(AllData event, Emitter<ApiDataState> emit) async {
     print("bloc call");
     final HttpService httpService = HttpService();
     try {
       List<User> data = await httpService.getData();
-      emit(ApidataLoaded(data: data));
+      emit(ApiDataLoaded(data: data));
     } catch (e) {
-      emit(ApidataError());
+      emit(ApiDataError(data: e.toString()));
     }
   }
 }
